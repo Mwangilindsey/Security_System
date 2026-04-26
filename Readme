@@ -1,0 +1,19 @@
+                Security and Visitors Management System
+
+1. Identifying a Real-World Problem 
+
+•	The Issue: Right now, security guards have to manually write down everything in gate logs.
+•	The Observation: I noticed they even write down school bus departure times by hand whenever they take students out.
+•	The Impact: These manual logs are hard to search, easy to mess up, and don't give any real-time info on whether a bus or visitor is still on site.
+
+2. Finding the "Gap" 
+
+•	The Gap: The school already has a system to check students in and out, but it completely ignores visitors, staff, and the bus fleet.
+•	Our Innovation: We can bridge this gap by creating a unified portal that handles what the current system cannot.
+
+3. What the System Will Do
+
+•	Visitor Management: Digital registration for guests with entry/exit timestamps.
+•	Bus Dispatch Module: A simple way for guards to log bus plate numbers and departure times with one click.
+•	Smart Alerts: The system flags the supervisor if a bus hasn't returned or a visitor hasn't checked out on time.
+
