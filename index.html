@@ -129,75 +129,29 @@
 </body>
 </html> -->
 
-<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jonathan Gloag Academy Security System</title>
-
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background: #0f172a;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.container {
-    background: #1e293b;
-    padding: 25px;
-    border-radius: 12px;
-    width: 350px;
-    text-align: center;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
-
-input, select, button {
-    width: 95%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 6px;
-    border: none;
-}
-
-button {
-    background: #22c55e;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #16a34a;
-}
-
-.hidden { display: none; }
-
-.status {
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-.log {
-    text-align: left;
-    margin-top: 15px;
-    max-height: 150px;
-    overflow-y: auto;
-    background: #020617;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 12px;
-}
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-
-<!-- LOGIN -->
+ LOGIN 
 <div class="container" id="loginBox">
     <h2>Security Login</h2>
     <input type="text" id="username" placeholder="Username">
@@ -206,7 +160,7 @@ button:hover {
     <p id="loginMsg"></p>
 </div>
 
-<!-- DASHBOARD -->
+ DASHBOARD 
 <div class="container hidden" id="dashboard">
     <h2>Access Control System</h2>
     <p id="welcome"></p>
@@ -332,4 +286,255 @@ function logout() {
 </script>
 
 </body>
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jonathan Gloag Academy Security System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- LOGIN PAGE -->
+<div class="login-page" id="loginPage">
+    <div class="container">
+        <h2>Jonathan Gloag Academy</h2>
+        <h3>Security System Login</h3>
+
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+
+        <button onclick="login()">Login</button>
+
+        <p id="loginMsg"></p>
+    </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div class="dashboard hidden" id="adminDashboard">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, Admin</p>
+
+    <div class="stats">
+        <div class="stat-box">
+            <h3>Total Entries</h3>
+            <p id="totalEntries">0</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>Students</h3>
+            <p id="studentCount">0</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>Visitors</h3>
+            <p id="visitorCount">0</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>Staff</h3>
+            <p id="staffCount">0</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Access Records</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Category</th>
+                    <th>ID Number</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="recordsTable"></tbody>
+        </table>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<!-- SECURITY DASHBOARD -->
+<div class="dashboard hidden" id="securityDashboard">
+    <h1>Security Dashboard</h1>
+    <p>Welcome, Security Officer</p>
+
+    <div class="card">
+        <h2>Record Entry / Exit</h2>
+
+        <input type="text" id="fullName" placeholder="Full Name">
+
+        <select id="category">
+            <option value="Student">Student</option>
+            <option value="Visitor">Visitor</option>
+            <option value="Staff">Staff</option>
+        </select>
+
+        <input type="text" id="idNumber" placeholder="ID / Registration Number">
+
+        <button onclick="recordEntry()">Record Entry</button>
+        <button onclick="recordExit()">Record Exit</button>
+    </div>
+
+    <div class="card">
+        <h2>Security Activity Log</h2>
+        <div class="log" id="activityLog">
+            <strong>Activity Log:</strong><br>
+        </div>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<script>
+let records = [];
+
+function login() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    if (username === "admin" && password === "admin123") {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("adminDashboard").classList.remove("hidden");
+        updateAdminDashboard();
+    } 
+    else if (username === "security" && password === "security123") {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("securityDashboard").classList.remove("hidden");
+    } 
+    else {
+        document.getElementById("loginMsg").innerText = "Invalid username or password";
+    }
+}
+
+function logout() {
+    document.getElementById("loginPage").classList.remove("hidden");
+    document.getElementById("adminDashboard").classList.add("hidden");
+    document.getElementById("securityDashboard").classList.add("hidden");
+
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("loginMsg").innerText = "";
+}
+
+function getCurrentTime() {
+    return new Date().toLocaleString();
+}
+
+function logActivity(message) {
+    const log = document.getElementById("activityLog");
+    log.innerHTML += `[${getCurrentTime()}] ${message}<br>`;
+}
+
+function recordEntry() {
+    const fullName = document.getElementById("fullName").value;
+    const category = document.getElementById("category").value;
+    const idNumber = document.getElementById("idNumber").value;
+
+    if (!fullName || !idNumber) {
+        alert("Please enter full name and ID number.");
+        return;
+    }
+
+    const alreadyInside = records.find(record => 
+        record.idNumber === idNumber && record.status === "IN"
+    );
+
+    if (alreadyInside) {
+        alert("This person is already recorded as inside.");
+        return;
+    }
+
+    const record = {
+        fullName: fullName,
+        category: category,
+        idNumber: idNumber,
+        timeIn: getCurrentTime(),
+        timeOut: "",
+        status: "IN"
+    };
+
+    records.push(record);
+
+    logActivity(fullName + " entered the facility as " + category);
+    updateAdminDashboard();
+
+    document.getElementById("fullName").value = "";
+    document.getElementById("idNumber").value = "";
+
+    alert("Entry recorded successfully.");
+}
+
+function recordExit() {
+    const idNumber = document.getElementById("idNumber").value;
+
+    if (!idNumber) {
+        alert("Please enter ID number.");
+        return;
+    }
+
+    const record = records.find(record => 
+        record.idNumber === idNumber && record.status === "IN"
+    );
+
+    if (!record) {
+        alert("No active entry found for this ID.");
+        return;
+    }
+
+    record.timeOut = getCurrentTime();
+    record.status = "OUT";
+
+    logActivity(record.fullName + " exited the facility.");
+    updateAdminDashboard();
+
+    document.getElementById("fullName").value = "";
+    document.getElementById("idNumber").value = "";
+
+    alert("Exit recorded successfully.");
+}
+
+function updateAdminDashboard() {
+    document.getElementById("totalEntries").innerText = records.length;
+    document.getElementById("studentCount").innerText =
+        records.filter(r => r.category === "Student").length;
+    document.getElementById("visitorCount").innerText =
+        records.filter(r => r.category === "Visitor").length;
+    document.getElementById("staffCount").innerText =
+        records.filter(r => r.category === "Staff").length;
+
+    const table = document.getElementById("recordsTable");
+    table.innerHTML = "";
+
+    records.forEach(record => {
+        table.innerHTML += `
+            <tr>
+                <td>${record.fullName}</td>
+                <td>${record.category}</td>
+                <td>${record.idNumber}</td>
+                <td>${record.timeIn}</td>
+                <td>${record.timeOut || "Still Inside"}</td>
+                <td>${record.status}</td>
+            </tr>
+        `;
+    });
+}
+</script>
+
+</body>
 </html>
+
+
+
+
