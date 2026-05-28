@@ -1,297 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jonathan Gloag Academy Security System</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #0f172a;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 12px;
-            width: 320px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        h2 {
-            margin-bottom: 20px;
-        }
-
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 6px;
-        }
-
-        button {
-            width: 95%;
-            padding: 10px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 6px;
-            background: #22c55e;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #16a34a;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .status {
-            margin-top: 15px;
-            font-weight: bold;
-        }
-
-        .armed {
-            color: #ef4444;
-        }
-
-        .disarmed {
-            color: #22c55e;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container" id="loginBox">
-    <h2>Security Login</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-    <p id="loginMsg"></p>
-</div>
-
-<div class="container hidden" id="dashboard">
-    <h2>Jonathan Gloag Academy Security System</h2>
-    <p id="welcome"></p>
-
-    <button onclick="toggleSystem()">Toggle Alarm</button>
-    <button onclick="logout()">Logout</button>
-
-    <p class="status" id="status">System Disarmed</p>
-</div>
-
-<script>
-    let isArmed = false;
-
-    function login() {
-        const user = document.getElementById("username").value;
-        const pass = document.getElementById("password").value;
-
-        // Simple demo credentials
-        if (user === "admin" && pass === "1234") {
-            document.getElementById("loginBox").classList.add("hidden");
-            document.getElementById("dashboard").classList.remove("hidden");
-            document.getElementById("welcome").innerText = "Welcome, " + user;
-        } else {
-            document.getElementById("loginMsg").innerText = "Invalid credentials!";
-        }
-    }
-
-    function toggleSystem() {
-        isArmed = !isArmed;
-        const status = document.getElementById("status");
-
-        if (isArmed) {
-            status.innerText = "System Armed 🔴";
-            status.className = "status armed";
-        } else {
-            status.innerText = "System Disarmed 🟢";
-            status.className = "status disarmed";
-        }
-    }
-
-    function logout() {
-        document.getElementById("dashboard").classList.add("hidden");
-        document.getElementById("loginBox").classList.remove("hidden");
-    }
-</script>
-
-</body>
-</html> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jonathan Gloag Academy Security System</title>
-<link rel="stylesheet" href="css/style.css">
-</head>
-
-<body>
- LOGIN 
-<div class="container" id="loginBox">
-    <h2>Security Login</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-    <p id="loginMsg"></p>
-</div>
-
- DASHBOARD 
-<div class="container hidden" id="dashboard">
-    <h2>Access Control System</h2>
-    <p id="welcome"></p>
-
-    <input type="text" id="name" placeholder="Full Name">
-
-    <select id="category">
-        <option value="Student">Student</option>
-        <option value="Visitor">Visitor</option>
-        <option value="Staff">Staff</option>
-    </select>
-
-    <input type="text" id="idNumber" placeholder="ID / Registration Number">
-
-    <button onclick="recordEntry()">Record Entry</button>
-    <button onclick="recordExit()">Record Exit</button>
-    <button onclick="logout()">Logout</button>
-
-    <div class="log" id="logBox">
-        <strong>Activity Log:</strong><br>
-    </div>
-</div>
-
-<script>
-let attempts = 0;
-const MAX_ATTEMPTS = 3;
-
-// TIME FUNCTION
-function getTime() {
-    return new Date().toLocaleTimeString();
-}
-
-// LOGGING FUNCTION
-function logEvent(message) {
-    const logBox = document.getElementById("logBox");
-    logBox.innerHTML += `[${getTime()}] ${message}<br>`;
-    logBox.scrollTop = logBox.scrollHeight;
-}
-
-// LOGIN
-function login() {
-    const user = document.getElementById("username").value;
-    const pass = document.getElementById("password").value;
-
-    if (attempts >= MAX_ATTEMPTS) {
-        document.getElementById("loginMsg").innerText = "System Locked!";
-        return;
-    }
-
-    if (user === "admin" && pass === "1234") {
-        document.getElementById("loginBox").classList.add("hidden");
-        document.getElementById("dashboard").classList.remove("hidden");
-        document.getElementById("welcome").innerText = "Welcome, " + user;
-        logEvent("User logged in");
-        attempts = 0;
-    } else {
-        attempts++;
-        document.getElementById("loginMsg").innerText = "Invalid credentials!";
-        logEvent("Failed login attempt");
-
-        if (attempts >= MAX_ATTEMPTS) {
-            logEvent("SYSTEM LOCKED due to multiple failed attempts");
-        }
-    }
-}
-
-// RECORD ENTRY
-async function recordEntry() {
-    const full_name = document.getElementById("name").value;
-    const category = document.getElementById("category").value;
-    const id_number = document.getElementById("idNumber").value;
-
-    if (!full_name || !id_number) {
-        alert("Please fill all fields");
-        return;
-    }
-
-    try {
-        const res = await fetch("http://localhost:3000/entry", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ full_name, category, id_number })
-        });
-
-        const msg = await res.text();
-        logEvent(full_name + " ENTERED (" + category + ")");
-        alert(msg);
-    } catch (err) {
-        alert("Server error");
-    }
-}
-
-// RECORD EXIT
-async function recordExit() {
-    const id_number = document.getElementById("idNumber").value;
-
-    if (!id_number) {
-        alert("Enter ID number");
-        return;
-    }
-
-    try {
-        const res = await fetch("http://localhost:3000/exit", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ id_number })
-        });
-
-        const msg = await res.text();
-        logEvent("ID " + id_number + " EXITED");
-        alert(msg);
-    } catch (err) {
-        alert("Server error");
-    }
-}
-
-// LOGOUT
-function logout() {
-    document.getElementById("dashboard").classList.add("hidden");
-    document.getElementById("loginBox").classList.remove("hidden");
-    logEvent("User logged out");
-}
-</script>
-
-</body>
-</html> -->
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -314,7 +20,38 @@ function logout() {
 
         <button onclick="login()">Login</button>
 
+        <p>
+            Don't have an account?
+            <a href="#" onclick="showSignup()">Sign Up</a>
+        </p>
+
+        <p>
+            <a href="#" onclick="forgotPassword()">Forgot Password?</a>
+        </p>
+
         <p id="loginMsg"></p>
+    </div>
+</div>
+
+<!-- SIGN UP PAGE -->
+<div class="login-page hidden" id="signupPage">
+    <div class="container">
+        <h2>Create Account</h2>
+
+        <input type="text" id="newUsername" placeholder="Create Username">
+        <input type="password" id="newPassword" placeholder="Create Password">
+
+        <select id="newRole">
+            <option value="security">Security Officer</option>
+            <option value="admin">Admin</option>
+        </select>
+
+        <button onclick="signup()">Create Account</button>
+
+        <p>
+            Already have an account?
+            <a href="#" onclick="backToLogin()">Login</a>
+        </p>
     </div>
 </div>
 
@@ -400,26 +137,97 @@ function logout() {
 <script>
 let records = [];
 
+let users = [
+    { username: "admin", password: "admin123", role: "admin" },
+    { username: "security", password: "security123", role: "security" }
+];
+
+function showSignup() {
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("signupPage").classList.remove("hidden");
+}
+
+function backToLogin() {
+    document.getElementById("signupPage").classList.add("hidden");
+    document.getElementById("loginPage").classList.remove("hidden");
+}
+
+function signup() {
+    const username = document.getElementById("newUsername").value;
+    const password = document.getElementById("newPassword").value;
+    const role = document.getElementById("newRole").value;
+
+    if (!username || !password) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    const existingUser = users.find(user => user.username === username);
+
+    if (existingUser) {
+        alert("Username already exists.");
+        return;
+    }
+
+    users.push({
+        username: username,
+        password: password,
+        role: role
+    });
+
+    alert("Account created successfully.");
+
+    document.getElementById("newUsername").value = "";
+    document.getElementById("newPassword").value = "";
+
+    backToLogin();
+}
+
+function forgotPassword() {
+    const username = prompt("Enter your username:");
+
+    if (!username) {
+        return;
+    }
+
+    const user = users.find(user => user.username === username);
+
+    if (!user) {
+        alert("Account not found.");
+        return;
+    }
+
+    alert("Your password is: " + user.password);
+}
+
 function login() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    if (username === "admin" && password === "admin123") {
-        document.getElementById("loginPage").classList.add("hidden");
+    const user = users.find(user =>
+        user.username === username &&
+        user.password === password
+    );
+
+    if (!user) {
+        document.getElementById("loginMsg").innerText =
+            "Invalid username or password";
+        return;
+    }
+
+    document.getElementById("loginPage").classList.add("hidden");
+
+    if (user.role === "admin") {
         document.getElementById("adminDashboard").classList.remove("hidden");
         updateAdminDashboard();
-    } 
-    else if (username === "security" && password === "security123") {
-        document.getElementById("loginPage").classList.add("hidden");
+    } else if (user.role === "security") {
         document.getElementById("securityDashboard").classList.remove("hidden");
-    } 
-    else {
-        document.getElementById("loginMsg").innerText = "Invalid username or password";
     }
 }
 
 function logout() {
     document.getElementById("loginPage").classList.remove("hidden");
+    document.getElementById("signupPage").classList.add("hidden");
     document.getElementById("adminDashboard").classList.add("hidden");
     document.getElementById("securityDashboard").classList.add("hidden");
 
@@ -447,7 +255,7 @@ function recordEntry() {
         return;
     }
 
-    const alreadyInside = records.find(record => 
+    const alreadyInside = records.find(record =>
         record.idNumber === idNumber && record.status === "IN"
     );
 
@@ -484,7 +292,7 @@ function recordExit() {
         return;
     }
 
-    const record = records.find(record => 
+    const record = records.find(record =>
         record.idNumber === idNumber && record.status === "IN"
     );
 
@@ -507,10 +315,13 @@ function recordExit() {
 
 function updateAdminDashboard() {
     document.getElementById("totalEntries").innerText = records.length;
+
     document.getElementById("studentCount").innerText =
         records.filter(r => r.category === "Student").length;
+
     document.getElementById("visitorCount").innerText =
         records.filter(r => r.category === "Visitor").length;
+
     document.getElementById("staffCount").innerText =
         records.filter(r => r.category === "Staff").length;
 
@@ -534,7 +345,3 @@ function updateAdminDashboard() {
 
 </body>
 </html>
-
-
-
-
