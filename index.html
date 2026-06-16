@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Jonathan Gloag Academy Security System</title>
+
 <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -57,34 +59,41 @@
 
 <!-- ADMIN DASHBOARD -->
 <div class="dashboard hidden" id="adminDashboard">
-    <h1>Security Dashboard</h1>
-    <p>Welcome</p>
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, Admin</p>
 
     <div class="stats">
+
         <div class="stat-box">
-            <h3>Visitors on-site</h3>
+            <h3>Visitors On-Site</h3>
+            <p id="visitorCount">0</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>Staff Present</h3>
+            <p id="staffCount">0</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>Bus Drivers Present</h3>
+            <p id="busDriversCount">0</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>Total Records</h3>
             <p id="totalEntries">0</p>
         </div>
 
         <div class="stat-box">
-            <h3>Staff present</h3>
-            <p id="studentCount">0</p>
+            <h3>Pending Alerts</h3>
+            <p id="pendingAlertsCount">0</p>
         </div>
 
-        <div class="stat-box">
-            <h3>Buses active</h3>
-            <p id="visitorCount">0</p>
-        </div>
-        
-
-        <div class="stat-box">
-            <h3>Pending alerts</h3>
-            <p id="staffCount">0</p>
-        </div>
     </div>
 
     <div class="card">
         <h2>Records</h2>
+
         <table>
             <thead>
                 <tr>
@@ -96,6 +105,7 @@
                     <th>Status</th>
                 </tr>
             </thead>
+
             <tbody id="recordsTable"></tbody>
         </table>
     </div>
@@ -103,9 +113,9 @@
     <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
-<!-- SECURITY DASHBOARD -->
+<!-- SECURITY OFFICER DASHBOARD -->
 <div class="dashboard hidden" id="securityDashboard">
-    <h1>Security Dashboard</h1>
+    <h1>Security Officer Dashboard</h1>
     <p>Welcome, Security Officer</p>
 
     <div class="card">
@@ -114,7 +124,7 @@
         <input type="text" id="fullName" placeholder="Full Name">
 
         <select id="category">
-            <option value="Student">Student</option>
+            <option value="Bus driver">Bus driver</option>
             <option value="Visitor">Visitor</option>
             <option value="Staff">Staff</option>
         </select>
@@ -127,6 +137,7 @@
 
     <div class="card">
         <h2>Security Activity Log</h2>
+
         <div class="log" id="activityLog">
             <strong>Activity Log:</strong><br>
         </div>
@@ -221,7 +232,8 @@ function login() {
     if (user.role === "admin") {
         document.getElementById("adminDashboard").classList.remove("hidden");
         updateAdminDashboard();
-    } else if (user.role === "security") {
+    } 
+    else if (user.role === "security") {
         document.getElementById("securityDashboard").classList.remove("hidden");
     }
 }
@@ -257,7 +269,8 @@ function recordEntry() {
     }
 
     const alreadyInside = records.find(record =>
-        record.idNumber === idNumber && record.status === "IN"
+        record.idNumber === idNumber &&
+        record.status === "IN"
     );
 
     if (alreadyInside) {
@@ -294,7 +307,8 @@ function recordExit() {
     }
 
     const record = records.find(record =>
-        record.idNumber === idNumber && record.status === "IN"
+        record.idNumber === idNumber &&
+        record.status === "IN"
     );
 
     if (!record) {
@@ -317,14 +331,28 @@ function recordExit() {
 function updateAdminDashboard() {
     document.getElementById("totalEntries").innerText = records.length;
 
-    document.getElementById("studentCount").innerText =
-        records.filter(r => r.category === "Student").length;
-
     document.getElementById("visitorCount").innerText =
-        records.filter(r => r.category === "Visitor").length;
+        records.filter(record =>
+            record.category === "Visitor" &&
+            record.status === "IN"
+        ).length;
 
     document.getElementById("staffCount").innerText =
-        records.filter(r => r.category === "Staff").length;
+        records.filter(record =>
+            record.category === "Staff" &&
+            record.status === "IN"
+        ).length;
+
+    document.getElementById("busDriversCount").innerText =
+        records.filter(record =>
+            record.category === "Bus driver" &&
+            record.status === "IN"
+        ).length;
+
+    document.getElementById("pendingAlertsCount").innerText =
+        records.filter(record =>
+            record.status === "IN"
+        ).length;
 
     const table = document.getElementById("recordsTable");
     table.innerHTML = "";
