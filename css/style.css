@@ -1,225 +1,147 @@
-/* =========================
-   GENERAL PAGE STYLING
-   ========================= */
-
-/* Styles the whole webpage */
 body {
-    font-family: Arial, sans-serif; /* Sets the font style */
-    background: linear-gradient(to right, #1f2937, #2563eb); /* Dark gray to blue gradient background */
-    color: white; /* Default text color */
-    margin: 0; /* Removes default browser margin */
-    padding: 0; /* Removes default browser padding */
+    font-family: Arial, sans-serif; 
+    background: linear-gradient(to right, #1f2937, #2563eb); 
+    color: white; 
+    margin: 0; 
+    padding: 0; 
 }
 
-
-/* =========================
-   LOGIN PAGE SECTION
-   ========================= */
-
-/* Centers the login page vertically and horizontally */
 .login-page {
-    height: 100vh; /* Makes section take full screen height */
-    display: flex; /* Enables flexible layout */
-    justify-content: center; /* Centers content horizontally */
-    align-items: center; /* Centers content vertically */
+    height: 100vh; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
 }
 
-
-/* =========================
-   MAIN CONTAINERS
-   ========================= */
-
-/* Styles the login box, cards, and stat boxes */
 .container,
 .card,
 .stat-box {
-    background: #374151; /* Dark gray background */
-    border-radius: 12px; /* Rounded corners */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Shadow effect */
+    background: #374151; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
 }
 
 
-/* =========================
-   LOGIN CONTAINER
-   ========================= */
-
-/* Styles the login form container */
 .container {
-    padding: 25px; /* Internal spacing */
-    width: 380px; /* Width of container */
-    text-align: center; /* Centers text */
+    padding: 25px; 
+    width: 380px; 
+    text-align: center; 
 }
 
 
-/* =========================
-   DASHBOARD SECTION
-   ========================= */
-
-/* Adds spacing around dashboard content */
 .dashboard {
     padding: 25px;
 }
 
 
-/* =========================
-   CARDS
-   ========================= */
-
-/* Styles dashboard cards */
 .card {
-    padding: 20px; /* Internal spacing */
-    margin-bottom: 20px; /* Space below card */
+    padding: 20px; 
+    margin-bottom: 20px; 
 }
 
 
-/* =========================
-   INPUT FIELDS
-   ========================= */
-
-/* Styles text inputs and dropdowns */
 input,
 select {
-    width: 95%; /* Makes inputs almost full width */
-    padding: 10px; /* Internal spacing */
-    margin: 8px 0; /* Space above and below */
-    border-radius: 6px; /* Rounded edges */
-    border: 1px solid #60a5fa; /* Blue border */
-    background: #4b5563; /* Dark input background */
-    color: white; /* Text color inside input */
+    width: 95%; 
+    padding: 10px; 
+    margin: 8px 0; 
+    border-radius: 6px; 
+    border: 1px solid #60a5fa; 
+    background: #4b5563; 
+    color: white; 
 }
 
 
-/* Styles placeholder text inside inputs */
 input::placeholder {
-    color: #d1d5db; /* Light gray placeholder text */
+    color: #d1d5db; 
 }
 
-
-/* =========================
-   BUTTONS
-   ========================= */
-
-/* Styles all buttons */
 button {
-    width: 95%; /* Makes button almost full width */
-    padding: 10px; /* Internal spacing */
-    margin: 8px 0; /* Vertical spacing */
-    border-radius: 6px; /* Rounded corners */
-    border: none; /* Removes border */
-    background: #2563eb; /* Blue button background */
-    color: white; /* Button text color */
-    font-weight: bold; /* Makes text bold */
-    cursor: pointer; /* Shows pointer cursor on hover */
-    transition: 0.3s; /* Smooth hover animation */
+    width: 95%; 
+    padding: 10px; 
+    margin: 8px 0; 
+    border-radius: 6px; 
+    border: none; 
+    background: #2563eb; 
+    color: white; 
+    font-weight: bold; 
+    cursor: pointer; 
+    transition: 0.3s; 
 }
 
 
-/* Changes button color when hovered */
 button:hover {
-    background: #1d4ed8; /* Darker blue */
+    background: #1d4ed8; 
 }
 
 
-/* =========================
-   LOGOUT BUTTON
-   ========================= */
-
-/* Styles logout button separately */
 .logout-btn {
-    background: #dc2626; /* Red background */
+    background: #dc2626; 
 }
 
 
-/* Changes logout button color on hover */
 .logout-btn:hover {
-    background: #b91c1c; /* Darker red */
+    background: #b91c1c; 
 }
 
 
-/* =========================
-   HIDDEN ELEMENTS
-   ========================= */
-
-/* Hides elements from the page */
 .hidden {
     display: none;
 }
 
 
-/* =========================
-   STATISTICS SECTION
-   ========================= */
-
-/* Aligns statistic boxes side by side */
 .stats {
-    display: flex; /* Flexible layout */
-    gap: 15px; /* Space between stat boxes */
-    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    display: flex; 
+    gap: 15px; 
+    flex-wrap: wrap; 
 }
 
 
-/* Styles each statistics box */
 .stat-box {
-    flex: 1; /* Makes boxes equal width */
-    min-width: 150px; /* Minimum width */
-    padding: 15px; /* Internal spacing */
-    text-align: center; /* Centers text */
+    flex: 1; 
+    min-width: 150px; 
+    padding: 15px; 
+    text-align: center; 
 }
 
 
-/* =========================
-   TABLE STYLING
-   ========================= */
-
-/* Styles the records table */
 table {
-    width: 100%; /* Full width */
-    border-collapse: collapse; /* Removes double borders */
-    background: #374151; /* Dark gray table background */
+    width: 100%; 
+    border-collapse: collapse; 
+    background: #374151; 
 }
 
 
-/* Styles table cells and headers */
 th,
 td {
-    padding: 10px; /* Internal spacing */
-    border: 1px solid #4b5563; /* Border color */
-    text-align: left; /* Aligns text left */
-    color: white; /* Text color */
+    padding: 10px; 
+    border: 1px solid #4b5563; 
+    text-align: left; 
+    color: white; 
 }
 
 
-/* Styles table headers */
+
 th {
-    background: #2563eb; /* Blue header background */
-    color: white; /* Header text color */
+    background: #2563eb; 
+    color: white; 
 }
 
 
-/* =========================
-   ACTIVITY LOG
-   ========================= */
-
-/* Styles the activity log section */
 .log {
-    text-align: left; /* Aligns text left */
-    max-height: 180px; /* Maximum height before scrolling */
-    overflow-y: auto; /* Enables vertical scrolling */
-    background: #1f2937; /* Dark background */
-    padding: 10px; /* Internal spacing */
-    border-radius: 8px; /* Rounded corners */
-    font-size: 13px; /* Smaller font */
-    color: white; /* Text color */
+    text-align: left; 
+    max-height: 180px; 
+    overflow-y: auto; 
+    background: #1f2937; 
+    padding: 10px; 
+    border-radius: 8px; 
+    font-size: 13px; 
+    color: white; 
 }
 
 
-/* =========================
-   TITLES
-   ========================= */
-
-/* Styles all headings */
 h1,
 h2,
 h3 {
-    color: #93c5fd; /* Light blue text */
+    color: #93c5fd; 
 }
