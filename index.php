@@ -1,3 +1,18 @@
+<?php
+include "DBO.php";
+
+$recordsQuery = "SELECT * FROM gate_records ORDER BY record_id DESC";
+$recordsResult = $conn->query($recordsQuery);
+
+$totalEntries = $conn->query("SELECT COUNT(*) AS total FROM gate_records")->fetch_assoc()['total'];
+$visitorCount = $conn->query("SELECT COUNT(*) AS total FROM gate_records WHERE category='Visitor' AND time_out IS NULL")->fetch_assoc()['total'];
+$staffCount = $conn->query("SELECT COUNT(*) AS total FROM gate_records WHERE category='Staff' AND time_out IS NULL")->fetch_assoc()['total'];
+$busDriversCount = $conn->query("SELECT COUNT(*) AS total FROM gate_records WHERE category='Bus Driver' AND time_out IS NULL")->fetch_assoc()['total'];
+$pendingAlertsCount = $conn->query("SELECT COUNT(*) AS total FROM gate_records WHERE time_out IS NULL")->fetch_assoc()['total'];
+?>
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,8 +26,7 @@
 
 <body>
 
-
-
+<!-- LOGIN PAGE -->
 <div class="login-page" id="loginPage">
     <div class="container">
         <h2>Jonathan Gloag Academy</h2>
@@ -67,27 +81,27 @@
 
         <div class="stat-box">
             <h3>Visitors On-Site</h3>
-            <p id="visitorCount">0</p>
+            <p id="visitorCount"><?php echo $visitorCount; ?></p>
         </div>
 
         <div class="stat-box">
             <h3>Staff Present</h3>
-            <p id="staffCount">0</p>
+            <p id="staffCount"><?php echo $staffCount; ?></p>
         </div>
 
         <div class="stat-box">
             <h3>Bus Drivers Present</h3>
-            <p id="busDriversCount">0</p>
+            <p id="busDriversCount"><?php echo $busDriversCount; ?></p>
         </div>
 
         <div class="stat-box">
             <h3>Total Records</h3>
-            <p id="totalEntries">0</p>
+            <p id="totalEntries"><?php echo $totalEntries; ?></p>
         </div>
 
         <div class="stat-box">
             <h3>Pending Alerts</h3>
-            <p id="pendingAlertsCount">0</p>
+            <p id="pendingAlertsCount"><?php echo $pendingAlertsCount; ?></p>
         </div>
 
     </div>
@@ -107,7 +121,34 @@
                 </tr>
             </thead>
 
-            <tbody id="recordsTable"></tbody>
+            <tbody id="recordsTable">
+                <?php while ($record = $recordsResult->fetch_assoc()) { ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($record['full_name']); ?></td>
+                        <td><?php echo htmlspecialchars($record['category']); ?></td>
+                        <td><?php echo htmlspecialchars($record['id_number']); ?></td>
+                        <td><?php echo htmlspecialchars($record['time_in']); ?></td>
+                        <td>
+                            <?php 
+                            if ($record['time_out']) {
+                                echo htmlspecialchars($record['time_out']);
+                            } else {
+                                echo "Still Inside";
+                            }
+                            ?>
+                        </td>
+                        <td>
+                            <?php 
+                            if ($record['time_out']) {
+                                echo "OUT";
+                            } else {
+                                echo "IN";
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
         </table>
     </div>
 
@@ -120,50 +161,51 @@
     <p>Welcome, Security Officer</p>
 
     <div class="card">
-    <h2>Record Entry / Exit</h2>
+        <h2>Record Entry / Exit</h2>
 
-    <form action="save_record.php" method="POST">
+        <form action="save_record.php" method="POST">
 
-        <input type="text"
-               name="full_name"
-               id="fullName"
-               placeholder="Full Name"
-               required>
+            <input type="text"
+                   name="full_name"
+                   id="fullName"
+                   placeholder="Full Name"
+                   required>
 
-        <select name="category"
-                id="category"
-                required>
-            <option value="Bus Driver">Bus Driver</option>
-            <option value="Visitor">Visitor</option>
-            <option value="Staff">Staff</option>
-        </select>
+            <select name="category"
+                    id="category"
+                    required>
+                <option value="Visitor">Visitor</option>
+                <option value="Staff">Staff</option>
+                <option value="Bus Driver">Bus Driver</option>
+            </select>
 
-        <input type="text"
-               name="id_number"
-               id="idNumber"
-               placeholder="ID / Registration Number"
-               required>
+            <input type="text"
+                   name="id_number"
+                   id="idNumber"
+                   placeholder="ID / Registration Number"
+                   required>
 
-        <button type="submit"
-                name="action"
-                value="entry">
-            Record Entry
-        </button>
+            <button type="submit"
+                    name="action"
+                    value="entry">
+                Record Entry
+            </button>
 
-        <button type="submit"
-                name="action"
-                value="exit">
-            Record Exit
-        </button>
+            <button type="submit"
+                    name="action"
+                    value="exit">
+                Record Exit
+            </button>
 
-    </form>
-</div>
+        </form>
+    </div>
 
     <div class="card">
         <h2>Security Activity Log</h2>
 
         <div class="log" id="activityLog">
             <strong>Activity Log:</strong><br>
+            Records are now saved in the database.
         </div>
     </div>
 
@@ -171,8 +213,6 @@
 </div>
 
 <script>
-let records = [];
-
 let users = [
     { username: "admin", password: "admin123", role: "admin" },
     { username: "security", password: "security123", role: "security" }
@@ -251,11 +291,13 @@ function login() {
         return;
     }
 
+    localStorage.setItem("loggedInUser", username);
+    localStorage.setItem("loggedInRole", user.role);
+
     document.getElementById("loginPage").classList.add("hidden");
 
     if (user.role === "admin") {
         document.getElementById("adminDashboard").classList.remove("hidden");
-        updateAdminDashboard();
     } 
     else if (user.role === "security") {
         document.getElementById("securityDashboard").classList.remove("hidden");
@@ -263,6 +305,9 @@ function login() {
 }
 
 function logout() {
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("loggedInRole");
+
     document.getElementById("loginPage").classList.remove("hidden");
     document.getElementById("signupPage").classList.add("hidden");
     document.getElementById("adminDashboard").classList.add("hidden");
@@ -273,127 +318,20 @@ function logout() {
     document.getElementById("loginMsg").innerText = "";
 }
 
-function getCurrentTime() {
-    return new Date().toLocaleString();
-}
+window.onload = function() {
+    const role = localStorage.getItem("loggedInRole");
 
-function logActivity(message) {
-    const log = document.getElementById("activityLog");
-    log.innerHTML += `[${getCurrentTime()}] ${message}<br>`;
-}
-
-function recordEntry() {
-    const fullName = document.getElementById("fullName").value;
-    const category = document.getElementById("category").value;
-    const idNumber = document.getElementById("idNumber").value;
-
-    if (!fullName || !idNumber) {
-        alert("Please enter full name and ID number.");
-        return;
+    if (role === "security") {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("securityDashboard").classList.remove("hidden");
     }
 
-    const alreadyInside = records.find(record =>
-        record.idNumber === idNumber &&
-        record.status === "IN"
-    );
-
-    if (alreadyInside) {
-        alert("This person is already recorded as inside.");
-        return;
+    if (role === "admin") {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("adminDashboard").classList.remove("hidden");
     }
+};
 
-    const record = {
-        fullName: fullName,
-        category: category,
-        idNumber: idNumber,
-        timeIn: getCurrentTime(),
-        timeOut: "",
-        status: "IN"
-    };
-
-    records.push(record);
-
-    logActivity(fullName + " entered the facility as " + category);
-    updateAdminDashboard();
-
-    document.getElementById("fullName").value = "";
-    document.getElementById("idNumber").value = "";
-
-    alert("Entry recorded successfully.");
-}
-
-function recordExit() {
-    const idNumber = document.getElementById("idNumber").value;
-
-    if (!idNumber) {
-        alert("Please enter ID number.");
-        return;
-    }
-
-    const record = records.find(record =>
-        record.idNumber === idNumber &&
-        record.status === "IN"
-    );
-
-    if (!record) {
-        alert("No active entry found for this ID.");
-        return;
-    }
-
-    record.timeOut = getCurrentTime();
-    record.status = "OUT";
-
-    logActivity(record.fullName + " exited the facility.");
-    updateAdminDashboard();
-
-    document.getElementById("fullName").value = "";
-    document.getElementById("idNumber").value = "";
-
-    alert("Exit recorded successfully.");
-}
-
-function updateAdminDashboard() {
-    document.getElementById("totalEntries").innerText = records.length;
-
-    document.getElementById("visitorCount").innerText =
-        records.filter(record =>
-            record.category === "Visitor" &&
-            record.status === "IN"
-        ).length;
-
-    document.getElementById("staffCount").innerText =
-        records.filter(record =>
-            record.category === "Staff" &&
-            record.status === "IN"
-        ).length;
-
-    document.getElementById("busDriversCount").innerText =
-        records.filter(record =>
-            record.category === "Bus driver" &&
-            record.status === "IN"
-        ).length;
-
-    document.getElementById("pendingAlertsCount").innerText =
-        records.filter(record =>
-            record.status === "IN"
-        ).length;
-
-    const table = document.getElementById("recordsTable");
-    table.innerHTML = "";
-
-    records.forEach(record => {
-        table.innerHTML += `
-            <tr>
-                <td>${record.fullName}</td>
-                <td>${record.category}</td>
-                <td>${record.idNumber}</td>
-                <td>${record.timeIn}</td>
-                <td>${record.timeOut || "Still Inside"}</td>
-                <td>${record.status}</td>
-            </tr>
-        `;
-    });
-}
 </script>
 
 </body>
