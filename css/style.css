@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif; 
-    background: linear-gradient(to right, #1f2937, #2563eb); 
+    background: dark rgb(139, 64, 64) ;
     color: white; 
     margin: 0; 
     padding: 0; 
@@ -76,12 +76,12 @@ button:hover {
 
 
 .logout-btn {
-    background: #dc2626; 
+    background: red; 
 }
 
 
 .logout-btn:hover {
-    background: #b91c1c; 
+    background: red; 
 }
 
 
