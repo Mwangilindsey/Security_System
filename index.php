@@ -214,7 +214,7 @@ session_start();
 
 <script>
 let users = [
-    { username: "admin", password: "admin123", role: "admin" },
+    { username: "security", password: "admin123", role: "admin" },
     { username: "security", password: "security123", role: "security" }
 ];
 
