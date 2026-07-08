@@ -34,14 +34,26 @@ $insidePeopleResult = $conn->query($insidePeopleQuery);
         <form action="save_record.php" method="POST">
 
             <input type="text"
-                   name="full_name"
-                   placeholder="Full Name"
-                   required>
+       id="full_name"
+       name="full_name"
+       placeholder="Full Name"
+       required>
+
+<small id="fullNameError" style="color:red;"></small>
 
             <select name="category" required>
                 <option value="Visitor">Visitor</option>
                 <option value="Staff">Staff</option>
                 <option value="Bus Driver">Bus Driver</option>
+            </select>
+            <label>Purpose of Entry</label>
+            <select name="purpose" required>
+                <option value="">-- Select Purpose --</option>
+                <option value="School Event">School Event</option>
+                <option value="Admission">Admission</option>
+                <option value="Staff Meeting">Staff Meeting</option>
+                <option value="Service/Delivery">Service/Delivery</option>
+                <option value="Staff Member">Staff Member</option>
             </select>
 
             <button type="submit"
@@ -61,6 +73,7 @@ $insidePeopleResult = $conn->query($insidePeopleQuery);
                 <tr>
                     <th>Full Name</th>
                     <th>Category</th>
+                    <th>Purpose of Entry</th>
                     <th>ID Number</th>
                     <th>Time In</th>
                     <th>Action</th>
@@ -72,6 +85,7 @@ $insidePeopleResult = $conn->query($insidePeopleQuery);
                     <tr>
                         <td><?php echo htmlspecialchars($person['full_name']); ?></td>
                         <td><?php echo htmlspecialchars($person['category']); ?></td>
+                        <td><?php echo htmlspecialchars($person['purpose']); ?></td>
                         <td><?php echo htmlspecialchars($person['id_number']); ?></td>
                         <td><?php echo htmlspecialchars($person['time_in']); ?></td>
                         <td>
@@ -87,11 +101,31 @@ $insidePeopleResult = $conn->query($insidePeopleQuery);
             </tbody>
         </table>
     </div>
-
+    
+    <a href="generate_report.php">
+    <button type="button">Generate Report</button>
+    </a>
     <a href="logout.php">
         <button class="logout-btn">Logout</button>
     </a>
 </div>
+
+<script>
+const fullName = document.getElementById("full_name");
+const fullNameError = document.getElementById("fullNameError");
+
+fullName.addEventListener("input", function () {
+
+    const value = fullName.value;
+
+    if (/[^A-Za-z ]/.test(value)) {
+        fullNameError.textContent = "Wrong input! Numbers and special characters are not allowed.";
+    } else {
+        fullNameError.textContent = "";
+    }
+
+});
+</script>
 
 </body>
 </html>

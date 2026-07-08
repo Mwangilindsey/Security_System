@@ -47,8 +47,9 @@ $pendingAlertsCount = $conn->query("SELECT COUNT(*) AS total FROM gate_records W
         <?php } ?>
 
         <form action="create_security.php" method="POST">
-            <input type="text" name="username" placeholder="Security Officer Username" required>
+           <input type="text" name="username" id="username" required>
 
+<small id="usernameError" style="color:red;"></small>
             <input type="password" name="password" placeholder="Security Officer Password" required>
 
             <button type="submit">Create Security Officer</button>
@@ -71,6 +72,7 @@ $pendingAlertsCount = $conn->query("SELECT COUNT(*) AS total FROM gate_records W
                 <tr>
                     <th>Full Name</th>
                     <th>Category</th>
+                    <th>Purpose</th>
                     <th>ID Number</th>
                     <th>Time In</th>
                     <th>Time Out</th>
@@ -83,6 +85,7 @@ $pendingAlertsCount = $conn->query("SELECT COUNT(*) AS total FROM gate_records W
                     <tr>
                         <td><?php echo htmlspecialchars($record['full_name']); ?></td>
                         <td><?php echo htmlspecialchars($record['category']); ?></td>
+                        <td><?php echo htmlspecialchars($record['purpose']); ?></td>
                         <td><?php echo htmlspecialchars($record['id_number']); ?></td>
                         <td><?php echo htmlspecialchars($record['time_in']); ?></td>
                         <td>
@@ -108,10 +111,13 @@ $pendingAlertsCount = $conn->query("SELECT COUNT(*) AS total FROM gate_records W
             </tbody>
         </table>
     </div>
-
+    <a href="generate_report.php">
+    <button type="button">Generate Report</button>
+</a>
     <a href="logout.php">
         <button class="logout-btn">Logout</button>
     </a>
+    
 </div>
 
 <script>
@@ -180,6 +186,23 @@ new Chart(document.getElementById("securityChart"), {
             }
         }
     }
+});
+</script>
+
+<script>
+const username = document.getElementById("username");
+const error = document.getElementById("usernameError");
+
+username.addEventListener("input", function () {
+
+    const value = username.value;
+
+    if (/[^A-Za-z ]/.test(value)) {
+        error.textContent = "Wrong input! Numbers and special characters are not allowed.";
+    } else {
+        error.textContent = "";
+    }
+
 });
 </script>
 

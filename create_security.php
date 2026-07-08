@@ -7,7 +7,12 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != "admin") {
     exit();
 }
 
-$username = $_POST['username'];
+$username = trim($_POST['username']);
+if (!preg_match('/^[A-Za-z ]+$/', $username)) {
+    die("Wrong input! Username can only contain letters and spaces.");
+}
+
+
 $password = $_POST['password'];
 
 $sql = "INSERT INTO users (username, password, role)
