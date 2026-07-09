@@ -63,7 +63,7 @@ if ($action == "entry") {
             VALUES (?, ?, ?, ?, ?, NOW(), ?)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssss", $category, $full_name, $id_number, $email, $phone, $purpose);
+    $stmt->bind_param("ssssss", $category, $full_name, $id_number, $email, $phone, $purpose);
 
     if ($stmt->execute()) {
         header("Location: security_dashboard.php");

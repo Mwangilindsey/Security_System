@@ -29,12 +29,14 @@ $pdf->Cell(20, 10, 'Record ID', 1);
 $pdf->Cell(30, 10, 'Category', 1);
 $pdf->Cell(45, 10, 'Full Name', 1);
 $pdf->Cell(35, 10, 'ID Number', 1);
+$pdf->Cell(45, 10, 'Email', 1);
+$pdf->Cell(35, 10, 'Phone', 1);
 $pdf->Cell(45, 10, 'Purpose', 1);
 $pdf->Cell(45, 10, 'Time In', 1);
 $pdf->Cell(45, 10, 'Time Out', 1);
 $pdf->Ln();
 
-$sql = "SELECT record_id, category, full_name, id_number, purpose, time_in, time_out
+$sql = "SELECT record_id, category, full_name, id_number, email, phone, purpose, time_in, time_out
         FROM gate_records
         ORDER BY record_id DESC";
 
@@ -48,6 +50,8 @@ while ($row = $result->fetch_assoc()) {
     $category = $row['category'] ?? '';
     $full_name = $row['full_name'] ?? '';
     $id_number = $row['id_number'] ?? '';
+    $email = $row['email'] ?? '';
+    $phone = $row['phone'] ?? '';
     $purpose = $row['purpose'] ?? '';
     $time_in = $row['time_in'] ?? '';
     $time_out = $row['time_out'] ?? '';
@@ -56,6 +60,8 @@ while ($row = $result->fetch_assoc()) {
     $pdf->Cell(30, 8, $category, 1);
     $pdf->Cell(45, 8, $full_name, 1);
     $pdf->Cell(35, 8, $id_number, 1);
+    $pdf->Cell(45, 8, $email, 1);
+    $pdf->Cell(35, 8, $phone, 1);
     $pdf->Cell(45, 8, $purpose, 1);
     $pdf->Cell(45, 8, $time_in, 1);
     $pdf->Cell(45, 8, $time_out, 1);
