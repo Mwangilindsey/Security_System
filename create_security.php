@@ -24,7 +24,7 @@ if (!preg_match('/^(07|01)[0-9]{8}$/', $phone)) {
     die("Invalid phone number.");
 }
 
-$check = $conn->prepare("SELECT id FROM users WHERE email=? OR phone=?");
+$check = $conn->prepare("SELECT * FROM users WHERE email=? OR phone=?");;
 $check->bind_param("ss", $email, $phone);
 $check->execute();
 
