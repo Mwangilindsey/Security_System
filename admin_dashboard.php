@@ -47,13 +47,36 @@ $pendingAlertsCount = $conn->query("SELECT COUNT(*) AS total FROM gate_records W
         <?php } ?>
 
         <form action="create_security.php" method="POST">
-           <input type="text" name="username" id="username" required>
 
-<small id="usernameError" style="color:red;"></small>
-            <input type="password" name="password" placeholder="Security Officer Password" required>
+    <input type="text"
+           name="username"
+           placeholder="Security Officer Username"
+           required
+           pattern="[A-Za-z0-9]{4,20}"
+           title="Username must be 4-20 letters and numbers only.">
 
-            <button type="submit">Create Security Officer</button>
-        </form>
+    <input type="password"
+           name="password"
+           placeholder="Security Officer Password"
+           required
+           minlength="6"
+           title="Password must be at least 6 characters.">
+
+    <input type="email"
+           name="email"
+           placeholder="Security Officer Email"
+           required>
+
+    <input type="tel"
+           name="phone"
+           placeholder="Phone Number (e.g. 0712345678)"
+           required
+           pattern="^(07|01)[0-9]{8}$"
+           title="Enter a valid Kenyan phone number starting with 07 or 01.">
+
+    <button type="submit">Create Security Officer</button>
+
+</form>
     </div>
 
     <div class="card">

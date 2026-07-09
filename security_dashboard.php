@@ -46,7 +46,27 @@ $insidePeopleResult = $conn->query($insidePeopleQuery);
                 <option value="Staff">Staff</option>
                 <option value="Bus Driver">Bus Driver</option>
             </select>
-            <label>Purpose of Entry</label>
+            
+
+<input
+    type="email"
+    name="email"
+    placeholder="Visitor Email"
+    required>
+
+<br><br>
+
+
+<input
+    type="tel"
+    name="phone"
+    placeholder="Phone Number (0712345678)"
+    required
+    pattern="^(07|01)[0-9]{8}$"
+    title="Enter a valid Kenyan phone number starting with 07 or 01.">
+
+
+    <label>Purpose of Entry</label>
             <select name="purpose" required>
                 <option value="">-- Select Purpose --</option>
                 <option value="School Event">School Event</option>
@@ -75,6 +95,8 @@ $insidePeopleResult = $conn->query($insidePeopleQuery);
                     <th>Category</th>
                     <th>Purpose of Entry</th>
                     <th>ID Number</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
                     <th>Time In</th>
                     <th>Action</th>
                 </tr>
@@ -87,6 +109,8 @@ $insidePeopleResult = $conn->query($insidePeopleQuery);
                         <td><?php echo htmlspecialchars($person['category']); ?></td>
                         <td><?php echo htmlspecialchars($person['purpose']); ?></td>
                         <td><?php echo htmlspecialchars($person['id_number']); ?></td>
+                        <td><?php echo htmlspecialchars($person['email']); ?></td>
+                        <td><?php echo htmlspecialchars($person['phone']); ?></td>
                         <td><?php echo htmlspecialchars($person['time_in']); ?></td>
                         <td>
                             <form action="save_record.php" method="POST">

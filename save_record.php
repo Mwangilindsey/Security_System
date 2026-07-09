@@ -14,6 +14,17 @@ if ($action == "entry") {
     $full_name = $_POST['full_name'];
     $category = $_POST['category'];
     $purpose = $_POST['purpose'];
+    $email = trim($_POST['email']);
+    $phone = trim($_POST['phone']);
+
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    die("Invalid email address.");
+    }
+
+    if (!preg_match("/^(07|01)[0-9]{8}$/", $phone)) {
+        die("Invalid phone number.");
+    }
 
     if ($category == "Visitor") {
         $prefix = "VIS";
@@ -48,11 +59,11 @@ if ($action == "entry") {
     $stmt->close();
 
     $sql = "INSERT INTO gate_records
-            (category, full_name, id_number, purpose, time_in)
-            VALUES (?, ?, ?, ?, NOW())";
+            (category, full_name, id_number, email, phone, time_in, purpose)
+            VALUES (?, ?, ?, ?, ?, NOW(), ?)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $category, $full_name, $id_number, $purpose);
+    $stmt->bind_param("sssssss", $category, $full_name, $id_number, $email, $phone, $purpose);
 
     if ($stmt->execute()) {
         header("Location: security_dashboard.php");
